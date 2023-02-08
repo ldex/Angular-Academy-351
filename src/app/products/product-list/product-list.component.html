@@ -9,7 +9,7 @@
     other {{{favourites}} favourites}
     }
 </div>
-<div> 
+<div>
     <!-- Search: <input type="text" [formControl]="filter" placeholder="filter by name"> -->
     &nbsp;
 </div>
@@ -31,6 +31,11 @@
 </ul>
 
 <div class="right">
+    <span *ngIf="mostExpensiveProduct$ | async as mostExpensiveProduct">
+        Most expensive:
+        {{ mostExpensiveProduct?.name }}
+        {{ mostExpensiveProduct?.price | currency: "USD":"symbol-narrow":".2" }}
+    </span>
     <button (click)="refresh()">Refresh List</button>&nbsp;
     <a routerLink="insert">Add new product...</a>
 </div>

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Observable, EMPTY, combineLatest, Subscription } from 'rxjs';
-import { tap, catchError, startWith, count, flatMap, map, debounceTime, filter } from 'rxjs/operators';
+import { tap, catchError, startWith, count, map, debounceTime, filter } from 'rxjs/operators';
 
 import { Product } from '../product.interface';
 import { ProductService } from '../product.service';
@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product;
 
   products$: Observable<Product[]>;
+  productsNumber$: Observable<number>;
   mostExpensiveProduct$: Observable<Product>;
 
   errorMessage;
@@ -65,6 +66,12 @@ export class ProductListComponent implements OnInit {
     this.products$ = this
                       .productService
                       .products$;
+
+    this.productsNumber$ = this
+                              .products$
+                              .pipe(
+                                map(products => products.length)
+                              )
 
     this.mostExpensiveProduct$ = this
                                     .productService

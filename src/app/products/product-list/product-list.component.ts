@@ -25,10 +25,18 @@ export class ProductListComponent implements OnInit {
   errorMessage;
 
   // Pagination
-  pageSize = 5;
+  productsToLoad = this.productService.productsToLoad;
+  pageSize = this.productsToLoad / 2;
   start = 0;
   end = this.pageSize;
   currentPage = 1;
+
+  loadMore() {
+    let skip = this.end;
+    let take = this.productsToLoad;
+
+    this.productService.initProducts(skip, take);
+  }
 
   previousPage() {
     this.start -= this.pageSize;
@@ -70,7 +78,8 @@ export class ProductListComponent implements OnInit {
     this.productsNumber$ = this
                               .products$
                               .pipe(
-                                map(products => products.length)
+                                map(products => products.length),
+                                startWith(0)
                               )
 
     this.mostExpensiveProduct$ = this
